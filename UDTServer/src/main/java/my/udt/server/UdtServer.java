@@ -1,4 +1,4 @@
-package my.udt.thread;
+package my.udt.server;
 
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -13,29 +13,29 @@ import udt.util.Util;
  * @author lin
  * @date 2022/2/4 00:22
  */
-public class UdtServerThread extends Thread {
+public class UdtServer {
 
     ExecutorService pool;
     UDTServerSocket udtServerSocket;
 
-    public UdtServerThread(String serverHost, int serverPort, int threadNum) throws UnknownHostException, SocketException {
+    public UdtServer(String serverHost, int serverPort, int threadNum) throws UnknownHostException, SocketException {
         pool = Executors.newFixedThreadPool(threadNum);
         udtServerSocket = new UDTServerSocket(InetAddress.getByName(serverHost), serverPort);
         while (true) {
             try {
                 UDTSocket udtSocket = udtServerSocket.accept();
-                pool.execute(new Request(udtSocket));
+                pool.execute(new UdtHandler(udtSocket));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static class Request implements Runnable {
+    public static class UdtHandler implements Runnable {
 
         final UDTSocket socket;
 
-        public Request(UDTSocket socket) {
+        public UdtHandler(UDTSocket socket) {
             this.socket = socket;
         }
 

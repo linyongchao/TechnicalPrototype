@@ -1,6 +1,6 @@
 package my.udt;
 
-import my.udt.thread.UdtServerThread;
+import my.udt.server.UdtServer;
 
 /**
  * @author lin
@@ -9,7 +9,6 @@ import my.udt.thread.UdtServerThread;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        UdtServerThread thread = new UdtServerThread("localhost", 12345, 10);
-        thread.start();
+        new UdtServer("localhost", 12345, 3);
     }
 }
