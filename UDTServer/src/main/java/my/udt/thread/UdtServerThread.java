@@ -1,8 +1,5 @@
 package my.udt.thread;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -10,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import udt.UDTServerSocket;
 import udt.UDTSocket;
+import udt.util.Util;
 
 /**
  * @author lin
@@ -33,23 +31,6 @@ public class UdtServerThread extends Thread {
         }
     }
 
-    static String readLine(InputStream r) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while (true) {
-            int c = r.read();
-            if (c < 0 && bos.size() == 0) {
-                return null;
-            }
-            if (c < 0 || c == 10) {
-                break;
-            } else {
-                bos.write(c);
-            }
-        }
-        return bos.toString();
-    }
-
-
     public static class Request implements Runnable {
 
         final UDTSocket socket;
@@ -61,10 +42,12 @@ public class UdtServerThread extends Thread {
         public void run() {
             while (true) {
                 try {
-                    InputStream in = socket.getInputStream();
-                    String line = readLine(in);
+                    String line = Util.readLine(socket.getInputStream());
                     if (line != null) {
                         System.out.println("接收消息: " + line);
+                    }
+                    if (line == null) {
+                        break;
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

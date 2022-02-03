@@ -18,7 +18,8 @@ public class Main {
 
     static void oneTest() throws Exception {
         UDTClient client = getClient(12346);
-        sendMessage(client, "Message send:one test");
+        // \n 是结束符，可以单独发送，也可以在一行的末尾发送
+        sendMessage(client, "Message send:one test\n");
     }
 
     static void multiThreadTest(int num) throws Exception {
@@ -33,6 +34,8 @@ public class Main {
                 for (int i = 0; i < num; i++) {
                     sendMessage(client, context + i);
                 }
+                // \n 是结束符，可以单独发送，也可以在一行的末尾发送
+                sendMessage(client, '\n');
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -49,7 +52,7 @@ public class Main {
         return client;
     }
 
-    private static void sendMessage(UDTClient client, String context) throws Exception {
+    private static void sendMessage(UDTClient client, Object context) throws Exception {
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(client.getOutputStream(), "UTF-8"));
         pw.println(context);
         pw.flush();
