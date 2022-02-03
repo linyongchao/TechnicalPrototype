@@ -2,6 +2,16 @@
 
 本工程用于做技术验证及整合之前的技术验证工程
 
+# UDT
+
+遗留一个问题：
+
+Request 类的 run 方法增加 while 循环，则无法释放线程；不增加 while 循环则一个连接只能接收一次消息，无法复用
+
+# HTTP
+
+使用 ```HttpServerProvider``` 发布 HTTP 接口
+
 # RMI
 
 1. 通过 ```Naming.bind(String name, Remote obj)``` 方法可知，需要发布的接口必须继承 ```java.rmi.Remote```
